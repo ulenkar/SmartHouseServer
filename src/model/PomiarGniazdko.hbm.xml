@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2017-04-22 17:07:11 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.PomiarGniazdko" table="POMIAR_GNIAZDKO" schema="SMARTHOUSE" optimistic-lock="version">
+        <id name="pomiarId" type="int">
+            <column name="POMIAR_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="sprzetId" type="int">
+            <column name="SPRZET_ID" not-null="true" />
+        </property>
+        <property name="momentPomiaru" type="timestamp">
+            <column name="MOMENT_POMIARU" length="29" />
+        </property>
+        <property name="pomiarNapiecie" type="big_decimal">
+            <column name="POMIAR_NAPIECIE" precision="8" />
+        </property>
+        <property name="pomiarPrad" type="big_decimal">
+            <column name="POMIAR_PRAD" precision="8" />
+        </property>
+        <property name="pomiarMoc" type="big_decimal">
+            <column name="POMIAR_MOC" precision="8" />
+        </property>
+    </class>
+</hibernate-mapping>
