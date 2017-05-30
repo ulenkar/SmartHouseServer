@@ -14,7 +14,7 @@ import org.hibernate.Session;
  *
  * @author Ulka
  */
-public class ProducentPomiarowNew {
+public class ProducentPomiarow {
 
     private ArrayList<Sprzet> gniazdka, czujniki;
     private int currIdTemp = 0, currIdGniazdka = 0;
@@ -27,8 +27,11 @@ public class ProducentPomiarowNew {
     private static final String OUERY_OSTATNIE_POM_TEMP = "from PomiarTemperatura pom\n" +
     "where  pom.momentPomiaru = (select max(pom2.momentPomiaru) from PomiarTemperatura pom2 "
             + "where pom.sprzetId = pom2.sprzetId)";
+    private static final String OUERY_OSTATNIE_POM_GNIAZDKA = "from PomiarGniazdko pom\n" +
+    "where  pom.momentPomiaru = (select max(pom2.momentPomiaru) from PomiarGniazdko pom2 "
+            + "where pom.sprzetId = pom2.sprzetId)";
 
-    public ProducentPomiarowNew() {
+    public ProducentPomiarow() {
         session = HibernateUtil.getSessionFactory().openSession();
         loadData();
         System.out.println("CurrIDs: " + currIdTemp + ", " + currIdGniazdka);
@@ -96,7 +99,17 @@ public class ProducentPomiarowNew {
             if (s.getSprzetId() == sprzetId) wynik = s.getPomiarTemp().toString();
             //pomiary.add(s);
         }
-        
+        return wynik;
+
+    }
+    
+    public PomiarGniazdko findOstatniPomiarGniazdkoFor(int sprzetId) {
+        List resultGniazdko = HibernateUtil.executeHQLListQuery(session, OUERY_OSTATNIE_POM_GNIAZDKA);
+        PomiarGniazdko wynik = null;
+        //ArrayList<PomiarTemperatura> pomiary = new ArrayList<>();
+        for (Object o : resultGniazdko) {
+            wynik = (PomiarGniazdko) o;
+        }
         return wynik;
 
     }

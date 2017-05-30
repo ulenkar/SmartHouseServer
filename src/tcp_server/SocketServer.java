@@ -14,7 +14,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import model.PomiarTemperatura;
-import model.ProducentPomiarowNew;
+import model.ProducentPomiarow;
 import view.UrzadzeniaForm1;
 
 /**
@@ -24,14 +24,14 @@ import view.UrzadzeniaForm1;
 public class SocketServer extends Thread {
 
     private ServerSocket serverSocket;
-    private final ProducentPomiarowNew producent;
+    private final ProducentPomiarow producent;
     private boolean running = true;
 
     public SocketServer(int port, boolean running) throws IOException {
         serverSocket = new ServerSocket(port);
         //serverSocket.setSoTimeout(10000);
         this.running = running;
-        producent = new ProducentPomiarowNew();
+        producent = new ProducentPomiarow();
     }
 
     public void run() {
@@ -77,6 +77,7 @@ public class SocketServer extends Thread {
                 BigDecimal wynikNap = new BigDecimal(pomiar[2]);
                 BigDecimal wynikPrad = new BigDecimal(pomiar[3]);
                 BigDecimal wynikMoc = new BigDecimal(pomiar[4]);
+                producent.newPomiarGniazdko(id, wynikNap, wynikPrad, wynikMoc);
             }
             else {
                 System.out.println("Nieprawidłowy zapis pomiaru");

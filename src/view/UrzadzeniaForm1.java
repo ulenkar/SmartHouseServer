@@ -6,9 +6,7 @@
 package view;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -19,11 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import model.HibernateUtil;
 import model.PomiarGniazdko;
-import model.PomiarTemperatura;
-import model.ProducentPomiarowNew;
+import model.ProducentPomiarow;
 import model.Sprzet;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import tcp_server.SocketServer;
 
@@ -36,15 +31,14 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
     private static final String QUERY_WYLACZONY = "from Sprzet where czy_Wlaczony= 1 and sprzet_Id = ";
     private Timer timer;
     private final int MY_TIME = 3000; //trzy sekundy
-    private ProducentPomiarowNew producent;
+    private final ProducentPomiarow producent;
     private Vector<Object> tempTableHeaders;
     private Vector tempTableData;
     private Vector<Object> gniazdkaTableHeaders;
     private Vector gniazdkaTableData;
-    private Session session;
-    private ArrayList<Sprzet> czujniki;
-    private ArrayList<Sprzet> gniazdka;
-    private Thread t;
+    private final Session session;
+    private final ArrayList<Sprzet> czujniki;
+    private final ArrayList<Sprzet> gniazdka;
     private boolean serverRunning = true;
 
     /**
@@ -53,7 +47,7 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
     public UrzadzeniaForm1() {
         initComponents();
         session = HibernateUtil.getSessionFactory().openSession();
-        producent = new ProducentPomiarowNew();
+        producent = new ProducentPomiarow();
         czujniki = producent.getCzujniki();
         gniazdka = producent.getGniazdka();
         loadDisplay();
@@ -82,9 +76,9 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         gniazdkaTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         jButton3.setText("Historia komunikatów");
 
@@ -182,14 +176,24 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Historia komunikatów");
-
-        jButton5.setText("Historia komunikatów");
-
         jButton6.setText("Dodaj");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("Usuń");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        jButton8.setText("Usuń");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
             }
         });
 
@@ -208,13 +212,13 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton2)))
+                                .addComponent(jButton7)))
                         .addGap(53, 53, 53)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton5))
+                                .addGap(5, 5, 5)
+                                .addComponent(jButton8))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))))
                 .addContainerGap(37, Short.MAX_VALUE))
@@ -238,11 +242,11 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton6)
-                        .addComponent(jButton5))
+                        .addComponent(jButton8))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton1)
-                        .addComponent(jButton2)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addComponent(jButton7)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -253,7 +257,7 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
         );
 
         pack();
@@ -277,6 +281,14 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         serverRunning = false;
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -315,11 +327,11 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable gniazdkaTable;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -400,9 +412,10 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 oneRow.add("");
             } else {
                 oneRow.add(true);
-                oneRow.add("0.0");
-                oneRow.add("0.0");
-                oneRow.add("0.0");
+                PomiarGniazdko pomiar = producent.findOstatniPomiarGniazdkoFor(s.getSprzetId());
+                oneRow.add(pomiar.getPomiarNapiecie());
+                oneRow.add(pomiar.getPomiarPrad());
+                oneRow.add(pomiar.getPomiarMoc());
             }
             gniazdkaTableData.add(oneRow);
         }
