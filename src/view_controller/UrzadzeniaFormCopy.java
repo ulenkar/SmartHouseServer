@@ -29,24 +29,24 @@ import tcp_server.SocketServer;
  *
  * @author Ulka
  */
-public class UrzadzeniaForm extends javax.swing.JFrame {
+public class UrzadzeniaFormCopy extends javax.swing.JFrame {
 
-    private static UrzadzeniaForm instance = null;
+    private static UrzadzeniaFormCopy instance = null;
     private static final String QUERY_WYLACZONY = "from Sprzet where czy_Wlaczony= 1 and sprzet_Id = ";
     private Timer timer;
-    private int MY_TIME = 3000; //trzy sekundy
+    private int MY_TIME = 20000; //trzy sekundy
     private final Menadzer menadzer;
-    private Vector<Object> tempTableHeaders;
-    private Vector tempTableData;
-    private Vector<Object> gniazdkaTableHeaders;
-    private Vector gniazdkaTableData;
+    private Object[] tempTableHeaders;
+    private Object[][] tempTableData;
+    private Object[] gniazdkaTableHeaders;
+    private Object[][] gniazdkaTableData;
     private ArrayList<Sprzet> czujniki;
     private ArrayList<Sprzet> gniazdka;
 
     /**
      * Creates new form UrzadzeniaForm
      */
-    private UrzadzeniaForm() {
+    UrzadzeniaFormCopy() {
         initComponents();
         menadzer = Menadzer.getInstance();
         czujniki = menadzer.getCzujniki();
@@ -56,9 +56,9 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         wlaczTimer();
     }
     
-    public static UrzadzeniaForm getInstance() {
+    public static UrzadzeniaFormCopy getInstance() {
         if (instance == null) {
-            instance = new UrzadzeniaForm();
+            instance = new UrzadzeniaFormCopy();
         }
         return instance;
     }
@@ -91,7 +91,6 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         ustaw = new javax.swing.JButton();
         intInfo = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         jButton3.setText("Historia komunikatów");
 
@@ -228,17 +227,10 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         intInfo.setForeground(new java.awt.Color(102, 102, 102));
         intInfo.setText(" ");
 
-        jButton1.setText("maly test");
+        jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("duzy test");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -252,9 +244,7 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(105, 105, 105)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addComponent(jButton1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -287,9 +277,7 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2)))
+                    .addComponent(jButton1))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -369,10 +357,6 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         new NewJFrame().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new UrzadzeniaFormCopy().setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -390,14 +374,18 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaFormCopy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaFormCopy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaFormCopy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaFormCopy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -405,7 +393,7 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new UrzadzeniaForm().setVisible(true);
+            new UrzadzeniaFormCopy().setVisible(true);
         });
     }
 
@@ -416,7 +404,6 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
     private javax.swing.JLabel intInfo;
     private javax.swing.JTextField interwal;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -433,22 +420,12 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void loadDisplay() {
-        tempTableHeaders = new Vector<>();
-        tempTableData = new Vector();
-        tempTableHeaders.add("ID");
-        tempTableHeaders.add("Opis");
-        tempTableHeaders.add("Włączony");
-        tempTableHeaders.add("Temperatura");
+        tempTableHeaders = new Object[]{"ID", "Opis", "Włączony", "Temperatura"};
+        tempTableData = new Object[100][3];  //wiersze kolumny
         tempTable.setModel(new DefaultTableModel(tempTableData, tempTableHeaders));
 
-        gniazdkaTableHeaders = new Vector<>();
-        gniazdkaTableData = new Vector();
-        gniazdkaTableHeaders.add("ID");
-        gniazdkaTableHeaders.add("Opis");
-        gniazdkaTableHeaders.add("Włączony");
-        gniazdkaTableHeaders.add("Napięcie");
-        gniazdkaTableHeaders.add("Prąd");
-        gniazdkaTableHeaders.add("Moc");
+        gniazdkaTableHeaders = new Object[]{"ID", "Opis", "Włączony", "Napięcie", "Prąd", "Moc"};
+        gniazdkaTableData = new Object[100][3];
         gniazdkaTable.setModel(new DefaultTableModel(gniazdkaTableData, gniazdkaTableHeaders));
     }
 
@@ -457,31 +434,29 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         czujniki = menadzer.getCzujniki();
         gniazdka = menadzer.getGniazdka();
 
-        tempTableData = new Vector();
+        tempTableData = new Object[100][4];
 
-        for (Sprzet s : czujniki) {
-            List sprzet = HibernateUtil.executeHQLListQuery(QUERY_WYLACZONY + s.getSprzetId());
-            Vector<Object> oneRow = new Vector<>();
-            oneRow.add(s.getSprzetId());
-            oneRow.add(s.getOpis());
+        for (int i=0; i<czujniki.size(); i++) {
+            List sprzet = HibernateUtil.executeHQLListQuery(QUERY_WYLACZONY + czujniki.get(i).getSprzetId());
+            tempTableData[i][0] = czujniki.get(i).getSprzetId();
+            tempTableData[i][1] = czujniki.get(i).getOpis();
             if (sprzet.isEmpty()) {
-                oneRow.add(false);
+                tempTableData[i][2] = false;
                 System.out.println("Wylaczony czujnik temp!!!");
-                oneRow.add("");
+                tempTableData[i][3] = "";
                 //wysłać informację do czujnika??
             } else {
-                oneRow.add(true);
-                String pomiar = menadzer.findOstatniPomiarTempFor(s.getSprzetId());
-                oneRow.add(pomiar);
+                tempTableData[i][2] = true;
+                String pomiar = menadzer.findOstatniPomiarTempFor(czujniki.get(i).getSprzetId());
+                tempTableData[i][3] = pomiar;
             }
-            tempTableData.add(oneRow);
         }
         
         
         DefaultTableModel tempTableModel = new DefaultTableModel(tempTableData, tempTableHeaders) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 2) return true;
+                if (column == 2 && row < czujniki.size()) return true;
                 return false;
             }
             @Override
@@ -498,7 +473,7 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
         tempTable.getColumnModel().getColumn(3).setPreferredWidth(50);
         tempTable.getModel().addTableModelListener(new CheckBoxModelListener());
 
-        gniazdkaTableData = new Vector();
+        //gniazdkaTableData = new Vector();
         for (Sprzet s : gniazdka) {
             List sprzet2 = HibernateUtil.executeHQLListQuery(QUERY_WYLACZONY + s.getSprzetId());
             Vector<Object> oneRow = new Vector<>();
@@ -522,7 +497,7 @@ public class UrzadzeniaForm extends javax.swing.JFrame {
                     oneRow.add("");
                 }
             }
-            gniazdkaTableData.add(oneRow);
+            //gniazdkaTableData.add(oneRow);
         }
         
         DefaultTableModel gniazdkaTableModel = new DefaultTableModel(gniazdkaTableData, gniazdkaTableHeaders) {
