@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view_controller;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Menadzer;
+import tcp_server.SocketServer;
 
 /**
  *
@@ -11,11 +17,24 @@ package view;
  */
 public class Start extends javax.swing.JFrame {
 
+    private static Start instance = null;
+    private boolean serverRunning = true;
+    
     /**
      * Creates new form Urzadzenia
      */
-    public Start() {
+    private Start() {
         initComponents();
+        startServer();
+        Menadzer menadzer = Menadzer.getInstance(); //wcześniejsza inicjalizacja
+        this.getRootPane().setDefaultButton(startButton);
+    }
+    
+    public static Start getInstance() {
+        if (instance == null) {
+            instance = new Start();
+        }
+        return instance;
     }
 
     /**
@@ -31,7 +50,7 @@ public class Start extends javax.swing.JFrame {
         startButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 500));
@@ -80,13 +99,14 @@ public class Start extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(716, 539));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        new UrzadzeniaForm1().setVisible(true); // Main Form to show after the Login Form..
+        UrzadzeniaForm.getInstance().setVisible(true); 
     }//GEN-LAST:event_startButtonActionPerformed
 
     /**
@@ -118,11 +138,8 @@ public class Start extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Start().setVisible(true);
-            }
-        });
+        Runnable start = () -> { new Start().setVisible(true); };
+        java.awt.EventQueue.invokeLater(start);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -131,4 +148,19 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
+    private void startServer() {
+        Thread t = null;
+        try {
+            t = new SocketServer(3333, serverRunning);
+        } catch (IOException ex) {
+            Logger.getLogger(UrzadzeniaForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(!(t==null)) t.start();
+    }
+
+    public void setServerRunning(boolean serverRunning) {
+        this.serverRunning = serverRunning;
+    }
+
+    
 }

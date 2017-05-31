@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view_controller;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -13,11 +13,14 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 import model.HibernateUtil;
 import model.PomiarGniazdko;
-import model.ProducentPomiarow;
+import model.Menadzer;
 import model.Sprzet;
 import org.hibernate.Session;
 import tcp_server.SocketServer;
@@ -26,34 +29,38 @@ import tcp_server.SocketServer;
  *
  * @author Ulka
  */
-public class UrzadzeniaForm1 extends javax.swing.JFrame {
+public class UrzadzeniaForm extends javax.swing.JFrame {
 
+    private static UrzadzeniaForm instance = null;
     private static final String QUERY_WYLACZONY = "from Sprzet where czy_Wlaczony= 1 and sprzet_Id = ";
     private Timer timer;
-    private final int MY_TIME = 3000; //trzy sekundy
-    private final ProducentPomiarow producent;
+    private int MY_TIME = 3000; //trzy sekundy
+    private final Menadzer menadzer;
     private Vector<Object> tempTableHeaders;
     private Vector tempTableData;
     private Vector<Object> gniazdkaTableHeaders;
     private Vector gniazdkaTableData;
-    private final Session session;
-    private final ArrayList<Sprzet> czujniki;
-    private final ArrayList<Sprzet> gniazdka;
-    private boolean serverRunning = true;
+    private ArrayList<Sprzet> czujniki;
+    private ArrayList<Sprzet> gniazdka;
 
     /**
      * Creates new form UrzadzeniaForm
      */
-    public UrzadzeniaForm1() {
+    private UrzadzeniaForm() {
         initComponents();
-        session = HibernateUtil.getSessionFactory().openSession();
-        producent = new ProducentPomiarow();
-        czujniki = producent.getCzujniki();
-        gniazdka = producent.getGniazdka();
+        menadzer = Menadzer.getInstance();
+        czujniki = menadzer.getCzujniki();
+        gniazdka = menadzer.getGniazdka();
         loadDisplay();
         wyswietlPomiary();
         wlaczTimer();
-        startServer();
+    }
+    
+    public static UrzadzeniaForm getInstance() {
+        if (instance == null) {
+            instance = new UrzadzeniaForm();
+        }
+        return instance;
     }
 
     /**
@@ -75,10 +82,14 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         gniazdkaTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        dodajCzujnik = new javax.swing.JButton();
+        dodajGniazdko = new javax.swing.JButton();
+        usunCzujnik = new javax.swing.JButton();
+        usunGniazdko = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        interwal = new javax.swing.JTextField();
+        ustaw = new javax.swing.JButton();
+        intInfo = new javax.swing.JLabel();
 
         jButton3.setText("Historia komunikatów");
 
@@ -169,33 +180,52 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Gniazdka elektryczne:");
 
-        jButton1.setText("Dodaj");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        dodajCzujnik.setText("Dodaj");
+        dodajCzujnik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                dodajCzujnikActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Dodaj");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        dodajGniazdko.setText("Dodaj");
+        dodajGniazdko.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                dodajGniazdkoActionPerformed(evt);
             }
         });
 
-        jButton7.setText("Usuń");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        usunCzujnik.setText("Usuń");
+        usunCzujnik.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                usunCzujnikActionPerformed(evt);
             }
         });
 
-        jButton8.setText("Usuń");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        usunGniazdko.setText("Usuń");
+        usunGniazdko.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                usunGniazdkoActionPerformed(evt);
             }
         });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setText("Interwał odświeżania (sek):");
+
+        interwal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        interwal.setText("3");
+        interwal.setToolTipText("");
+
+        ustaw.setText("Ustaw");
+        ustaw.setToolTipText("");
+        ustaw.setActionCommand("Ustaw");
+        ustaw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ustawActionPerformed(evt);
+            }
+        });
+
+        intInfo.setForeground(new java.awt.Color(102, 102, 102));
+        intInfo.setText(" ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,19 +238,27 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(dodajCzujnik)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton7)))
+                                .addComponent(usunCzujnik))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(53, 53, 53)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton6)
+                                .addComponent(dodajGniazdko)
                                 .addGap(5, 5, 5)
-                                .addComponent(jButton8))
+                                .addComponent(usunGniazdko))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
+                            .addComponent(jLabel3)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(interwal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ustaw)
+                        .addGap(18, 18, 18)
+                        .addComponent(intInfo)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -229,24 +267,30 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton6)
-                        .addComponent(jButton8))
+                        .addComponent(dodajGniazdko)
+                        .addComponent(usunGniazdko))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton7)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addComponent(dodajCzujnik)
+                        .addComponent(usunCzujnik)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(interwal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ustaw)
+                    .addComponent(intInfo))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,35 +304,42 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(859, 555));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void dodajCzujnikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajCzujnikActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        new DodajSprzet("czujnik").setVisible(true);
+    }//GEN-LAST:event_dodajCzujnikActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void dodajGniazdkoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajGniazdkoActionPerformed
+        new DodajSprzet("gniazdko").setVisible(true);
+    }//GEN-LAST:event_dodajGniazdkoActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
-        session.close();
-        serverRunning = false;
         System.exit(0);
     }//GEN-LAST:event_formWindowClosing
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void usunCzujnikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunCzujnikActionPerformed
+        new UsunSprzet("czujnik").setVisible(true);
+    }//GEN-LAST:event_usunCzujnikActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    private void usunGniazdkoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunGniazdkoActionPerformed
+        new UsunSprzet("gniazdko").setVisible(true);
+    }//GEN-LAST:event_usunGniazdkoActionPerformed
+
+    private void ustawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ustawActionPerformed
+        MY_TIME =  Integer.parseInt(interwal.getText()) * 1000;
+        System.out.println("Nowy interwał: " + MY_TIME);
+        timer.stop();
+        wlaczTimer();
+        intInfo.setText("Ustawiono nowy interwał odświeżania: " + MY_TIME/1000 + " sekund.");
+    }//GEN-LAST:event_ustawActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,38 +358,44 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UrzadzeniaForm1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UrzadzeniaForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new UrzadzeniaForm1().setVisible(true);
+            new UrzadzeniaForm().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton dodajCzujnik;
+    private javax.swing.JButton dodajGniazdko;
     private javax.swing.JTable gniazdkaTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel intInfo;
+    private javax.swing.JTextField interwal;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tempTable;
+    private javax.swing.JButton ustaw;
+    private javax.swing.JButton usunCzujnik;
+    private javax.swing.JButton usunGniazdko;
     // End of variables declaration//GEN-END:variables
 
     private void loadDisplay() {
@@ -364,10 +421,14 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
     }
 
     private void wyswietlPomiary() {
+        menadzer.refreshSprzet();
+        czujniki = menadzer.getCzujniki();
+        gniazdka = menadzer.getGniazdka();
+
         tempTableData = new Vector();
-        
+
         for (Sprzet s : czujniki) {
-            List sprzet = HibernateUtil.executeHQLListQuery(session, QUERY_WYLACZONY + s.getSprzetId());
+            List sprzet = HibernateUtil.executeHQLListQuery(QUERY_WYLACZONY + s.getSprzetId());
             Vector<Object> oneRow = new Vector<>();
             oneRow.add(s.getSprzetId());
             oneRow.add(s.getOpis());
@@ -378,7 +439,7 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 //wysłać informację do czujnika??
             } else {
                 oneRow.add(true);
-                String pomiar = producent.findOstatniPomiarTempFor(s.getSprzetId());
+                String pomiar = menadzer.findOstatniPomiarTempFor(s.getSprzetId());
                 oneRow.add(pomiar);
             }
             tempTableData.add(oneRow);
@@ -386,8 +447,12 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         DefaultTableModel tempTableModel = new DefaultTableModel(tempTableData, tempTableHeaders) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                //all cells false
+                if (column == 2) return true;
                 return false;
+            }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return columnIndex == 2 ? Boolean.class : super.getColumnClass(columnIndex);
             }
         };
         tempTable.setModel(tempTableModel);
@@ -397,11 +462,11 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         tempTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         tempTable.getColumnModel().getColumn(2).setPreferredWidth(40);
         tempTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tempTable.getModel().addTableModelListener(new CheckBoxModelListener());
 
-        
         gniazdkaTableData = new Vector();
         for (Sprzet s : gniazdka) {
-            List sprzet2 = HibernateUtil.executeHQLListQuery(session, QUERY_WYLACZONY + s.getSprzetId());
+            List sprzet2 = HibernateUtil.executeHQLListQuery(QUERY_WYLACZONY + s.getSprzetId());
             Vector<Object> oneRow = new Vector<>();
             oneRow.add(s.getSprzetId());
             oneRow.add(s.getOpis());
@@ -412,18 +477,28 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
                 oneRow.add("");
             } else {
                 oneRow.add(true);
-                PomiarGniazdko pomiar = producent.findOstatniPomiarGniazdkoFor(s.getSprzetId());
-                oneRow.add(pomiar.getPomiarNapiecie());
-                oneRow.add(pomiar.getPomiarPrad());
-                oneRow.add(pomiar.getPomiarMoc());
+                PomiarGniazdko pomiar = menadzer.findOstatniPomiarGniazdkoFor(s.getSprzetId());
+                if (!(pomiar == null)) {
+                    oneRow.add(pomiar.getPomiarNapiecie());
+                    oneRow.add(pomiar.getPomiarPrad());
+                    oneRow.add(pomiar.getPomiarMoc());
+                } else {
+                    oneRow.add("");
+                    oneRow.add("");
+                    oneRow.add("");
+                }
             }
             gniazdkaTableData.add(oneRow);
         }
         DefaultTableModel gniazdkaTableModel = new DefaultTableModel(gniazdkaTableData, gniazdkaTableHeaders) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                //all cells false
+                if (column == 2) return true;
                 return false;
+            }
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return columnIndex == 2 ? Boolean.class : super.getColumnClass(columnIndex);
             }
         };
         gniazdkaTable.setModel(gniazdkaTableModel);
@@ -435,6 +510,7 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         gniazdkaTable.getColumnModel().getColumn(3).setPreferredWidth(40);
         gniazdkaTable.getColumnModel().getColumn(4).setPreferredWidth(30);
         gniazdkaTable.getColumnModel().getColumn(5).setPreferredWidth(40);
+        gniazdkaTable.getModel().addTableModelListener(new CheckBoxModelListener());
     }
 
     private void wlaczTimer() {
@@ -444,15 +520,25 @@ public class UrzadzeniaForm1 extends javax.swing.JFrame {
         });
         timer.start();
     }
+    
+    private class CheckBoxModelListener implements TableModelListener {
 
-    private void startServer() {
-        Thread t = null;
-        try {
-            t = new SocketServer(3333, serverRunning);
-        } catch (IOException ex) {
-            Logger.getLogger(UrzadzeniaForm1.class.getName()).log(Level.SEVERE, null, ex);
+        @Override
+        public void tableChanged(TableModelEvent e) {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            if (column == 2) {
+                TableModel model = (TableModel) e.getSource();
+                int id = (int) model.getValueAt(row, 0);
+                //String columnName = model.getColumnName(column);
+                Boolean checked = (Boolean) model.getValueAt(row, column);
+                if (checked) {
+                    menadzer.setWlaczSprzet(id, 1); //Wlaczanie
+                } else {
+                    menadzer.setWlaczSprzet(id, 0); //Wylaczanie
+                }
+            }
         }
-        t.start();
     }
 
 }

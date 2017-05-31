@@ -14,8 +14,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import model.PomiarTemperatura;
-import model.ProducentPomiarow;
-import view.UrzadzeniaForm1;
+import model.Menadzer;
+import view_controller.UrzadzeniaForm;
 
 /**
  *
@@ -24,14 +24,14 @@ import view.UrzadzeniaForm1;
 public class SocketServer extends Thread {
 
     private ServerSocket serverSocket;
-    private final ProducentPomiarow producent;
+    private final Menadzer menadzer;
     private boolean running = true;
 
     public SocketServer(int port, boolean running) throws IOException {
         serverSocket = new ServerSocket(port);
         //serverSocket.setSoTimeout(10000);
         this.running = running;
-        producent = new ProducentPomiarow();
+        menadzer = Menadzer.getInstance();
     }
 
     public void run() {
@@ -66,18 +66,19 @@ public class SocketServer extends Thread {
         //odczyt temperatury
         System.out.println("Server wczytuje zbiór danych pomiarowych...");
         String[] zbior = readUTF.split("#");
+        menadzer.refreshSprzet();
         for (int i = 0; i < zbior.length; i++) {
             System.out.println("Wczytuję pomiar " + i + "...");
             String[] pomiar = zbior[i].split(";");
             int id = Integer.parseInt(pomiar[1]);
             if (zbior[i].startsWith("T")) {
                 BigDecimal wynik = new BigDecimal(pomiar[2]);
-                producent.newPomiarTemp(id, wynik);
+                menadzer.newPomiarTemp(id, wynik);
             } else if (zbior[i].startsWith("G")){
                 BigDecimal wynikNap = new BigDecimal(pomiar[2]);
                 BigDecimal wynikPrad = new BigDecimal(pomiar[3]);
                 BigDecimal wynikMoc = new BigDecimal(pomiar[4]);
-                producent.newPomiarGniazdko(id, wynikNap, wynikPrad, wynikMoc);
+                menadzer.newPomiarGniazdko(id, wynikNap, wynikPrad, wynikMoc);
             }
             else {
                 System.out.println("Nieprawidłowy zapis pomiaru");

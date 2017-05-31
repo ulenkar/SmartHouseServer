@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,7 +22,7 @@ import org.hibernate.SessionFactory;
 public class HibernateUtil {
 
     private static final SessionFactory sessionFactory;
-    
+
     static {
         try {
             // Create the SessionFactory from standard (hibernate.cfg.xml) 
@@ -33,15 +34,15 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-    
+
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    
-    public static List executeHQLListQuery(Session session, String hql) {
+
+    public static List executeHQLListQuery(String hql) {
         List resultList = null;
         try {
-            //Session session = getSessionFactory().openSession();
+            Session session = getSessionFactory().openSession();
             session.beginTransaction();
             Query q = session.createQuery(hql);
             resultList = q.list();
@@ -51,11 +52,11 @@ public class HibernateUtil {
         }
         return resultList;
     }
-    
-    public static int executeHQLUniqueQuery(Session session, String hql) {
+
+    public static int executeHQLUniqueQuery(String hql) {
         int result = 0;
         try {
-            //Session session = getSessionFactory().openSession();
+            Session session = getSessionFactory().openSession();
             session.beginTransaction();
             Query q = session.createQuery(hql);
             result = (int) q.uniqueResult();
@@ -65,15 +66,44 @@ public class HibernateUtil {
         }
         return result;
     }
-    
-    public static void executeHQLsave(Session session, Object o) {
+
+    public static void executeHQLsave(Object o) {
         try {
-            //Session session = getSessionFactory().openSession();
+            Session session = getSessionFactory().openSession();
             session.beginTransaction();
             session.save(o);
             session.getTransaction().commit();
         } catch (HibernateException he) {
             he.printStackTrace();
         }
+    }
+
+    public static void executeHQLdeleteObject(Object o) {
+        try {
+            Session session = getSessionFactory().openSession();
+            session.beginTransaction();
+            session.delete(o);
+            session.getTransaction().commit();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+        }
+    }
+
+    public static int executeHQLDelete(String hql) {
+        int isOk = 0;
+        try {
+            Session session = getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery(hql);
+            isOk = query.executeUpdate();
+            session.getTransaction().commit();
+        } catch (HibernateException he) {
+            he.printStackTrace();
+        }
+        return isOk;
+    }
+
+    public static int executeHQLUpdate(String hql) {
+        return executeHQLDelete(hql);
     }
 }

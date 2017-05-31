@@ -20,8 +20,10 @@
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,43,0,0,3,91"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="0"/>
+    <SyntheticProperty name="generateSize" type="boolean" value="true"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <Events>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
@@ -71,23 +73,32 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" min="-2" pref="304" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dodajCzujnik" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton7" min="-2" max="-2" attributes="0"/>
+                                  <Component id="usunCzujnik" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jScrollPane1" min="-2" pref="304" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="jButton6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dodajGniazdko" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                                  <Component id="jButton8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="usunGniazdko" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jScrollPane2" min="-2" pref="422" max="-2" attributes="0"/>
                               <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="interwal" min="-2" pref="38" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="ustaw" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="intInfo" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="37" max="32767" attributes="0"/>
@@ -100,30 +111,37 @@
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="346" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="323" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="323" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="jButton6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton8" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajGniazdko" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="usunGniazdko" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajCzujnik" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="usunCzujnik" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="40" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="interwal" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ustaw" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="intInfo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="22" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -261,37 +279,69 @@
             <Property name="text" type="java.lang.String" value="Gniazdka elektryczne:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="dodajCzujnik">
           <Properties>
             <Property name="text" type="java.lang.String" value="Dodaj"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajCzujnikActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton6">
+        <Component class="javax.swing.JButton" name="dodajGniazdko">
           <Properties>
             <Property name="text" type="java.lang.String" value="Dodaj"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajGniazdkoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton7">
+        <Component class="javax.swing.JButton" name="usunCzujnik">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usu&#x144;"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usunCzujnikActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton8">
+        <Component class="javax.swing.JButton" name="usunGniazdko">
           <Properties>
             <Property name="text" type="java.lang.String" value="Usu&#x144;"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usunGniazdkoActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Interwa&#x142; od&#x15b;wie&#x17c;ania (sek):"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="interwal">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="3"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="ustaw">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ustaw"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ustawActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="intInfo">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="66" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value=" "/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

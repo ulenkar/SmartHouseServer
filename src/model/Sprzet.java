@@ -76,4 +76,11 @@ public class Sprzet implements java.io.Serializable {
         return wynik;
     }
 
+    @Override
+    public String toString() {
+        return "Id: " + sprzetId + " - " + opis;
+    }
+    
+    
+
 }
